@@ -3,18 +3,21 @@ import requests
 
 
 REPOS_TO_GET = 20
+WEEK_SIZE = 7
 
 
 def get_trending_repositories(top_size, from_date):
+    api_params = {'q': 'created:>=%s' % from_date, 'sort': 'stars'}
     last_week_repos = requests.get(
-        'https://api.github.com/search/repositories?q=created:>={a_date}&sort=stars'.format(
-            a_date=from_date)).json()
+        'https://api.github.com/search/repositories',
+        params=api_params
+        ).json()
     return last_week_repos['items'][:top_size]
     
 
 def get_last_week():
     today = datetime.date.today()
-    week_earlier = today - datetime.timedelta(days=7)
+    week_earlier = today - datetime.timedelta(days=WEEK_SIZE)
     return week_earlier
 
 
